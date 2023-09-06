@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mcemeurckart_admin/constants/index.dart';
+import 'package:mcemeurckart_admin/controller/categories_controller.dart';
+import 'package:mcemeurckart_admin/controller/generics_controller.dart';
 import 'package:mcemeurckart_admin/screens/add_category/add_category.dart';
 import 'package:mcemeurckart_admin/screens/add_generics/add_generics.dart';
 import 'package:mcemeurckart_admin/screens/add_product/add_product.dart';
@@ -46,11 +49,15 @@ class _BaseScreenState extends State<BaseScreen> {
     const GenerateReports(),
   ];
 
+  GenericsController genericsController = Get.put(GenericsController());
+  CategoriesController categoriesController = Get.put(CategoriesController());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            backgroundColor: AppColors.blue100,
             leading: Builder(
               builder: (context) => IconButton(
                 icon: const Icon(Icons.menu),
@@ -68,10 +75,18 @@ class _BaseScreenState extends State<BaseScreen> {
           drawer: CustomDrawer(
             controller: pageController,
           ),
-          body: PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: screens,
+          body: GetBuilder<GenericsController>(
+            builder: (genericsController) {
+              return GetBuilder<CategoriesController>(
+                builder: (categoriesController) {
+                  return PageView(
+                    controller: pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: screens,
+                  );
+                },
+              );
+            },
           )),
     );
   }

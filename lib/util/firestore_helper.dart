@@ -22,9 +22,9 @@ class FireBaseStoreHelper {
   static Future<void> addGenerics(
       String genericId, Map<String, dynamic> generics) async {
     try {
-      await genericsRef.doc(genericId.toLowerCase()).set({
+      await genericsRef.doc(genericId).set({
         'title': generics['title'].toUpperCase(),
-        'categories': generics['categories'],
+        'categories': [],
       });
     } catch (e) {
       Get.snackbar("Error", e.toString(),
@@ -38,28 +38,68 @@ class FireBaseStoreHelper {
     return genericsRef.snapshots().map((event) {
       final data = event.docs.map((e) {
         return {
-          'genericId': e.id,
+          'id': e.id,
           'title': e.data()['title'],
           'categories': e.data()['categories'],
         };
       }).toList();
-      return List.from(data);
+      log(data.toString());
+      return data;
     });
   }
 
   static final categoriesRef = db.collection('categories');
 
-  static Future<void> addRootCategories(
+  static Future<void> addRootCategory(
       String categoryId, Map<String, dynamic> category) async {
+    final batch = db.batch();
     try {
-      await categoriesRef.doc(categoryId.toLowerCase()).set({
+      final rootCategoryRef = categoriesRef.doc(categoryId);
+      batch.set(rootCategoryRef, {
         'title': category['title'].toUpperCase(),
-        'isRoot': true,
-        'hasSubCategories': false,
+        'isRoot': category['isRoot'],
+        'hasSubCategories': true,
         'hasProducts': false,
         'imageUrl': category['imageUrl'],
         'generic': category['generic'],
+        'subCategories': [],
       });
+
+      final parentGenericRef = genericsRef.doc(category['generic']);
+      batch.update(parentGenericRef, {
+        'categories': FieldValue.arrayUnion([categoryId])
+      });
+
+      await batch.commit();
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.red400,
+          colorText: AppColors.white);
+    }
+  }
+
+  static Future<void> addRootCategoryWithProducts(
+      String categoryId, Map<String, dynamic> category) async {
+    final batch = db.batch();
+    try {
+      final rootCategoryRef = categoriesRef.doc(categoryId);
+      batch.set(rootCategoryRef, {
+        'title': category['title'].toUpperCase(),
+        'isRoot': category['isRoot'],
+        'hasSubCategories': false,
+        'hasProducts': true,
+        'imageUrl': category['imageUrl'],
+        'generic': category['generic'],
+        'products': []
+      });
+
+      final parentGenericRef = genericsRef.doc(category['generic']);
+      batch.update(parentGenericRef, {
+        'categories': FieldValue.arrayUnion([categoryId])
+      });
+
+      await batch.commit();
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           snackPosition: SnackPosition.BOTTOM,
@@ -71,48 +111,100 @@ class FireBaseStoreHelper {
   /* ====== to add and get categories ====== */
   static Future<void> addCategoryWithProducts(
       String categoryId, Map<String, dynamic> category) async {
+    final batch = db.batch();
+
     try {
-      await categoriesRef.doc(categoryId.toLowerCase()).set({
+      final categoryRef = categoriesRef.doc(categoryId);
+      batch.set(categoryRef, {
         'title': category['title'].toUpperCase(),
+        'isRoot': category['isRoot'],
         'hasSubCategories': false,
         'hasProducts': true,
-        'products': category['products'],
+        'products': [],
+        'generic': category['generic'],
         'imageUrl': category['imageUrl'],
       });
+
+      final parentCategoryRef = categoriesRef.doc(category['parentId']);
+      batch.update(parentCategoryRef, {
+        'subCategories': FieldValue.arrayUnion([categoryId])
+      });
+
+      await batch.commit();
     } catch (e) {
-      print(e);
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.red400,
+          colorText: AppColors.white);
     }
   }
 
   static Future<void> addCategoryWithSubCategories(
       String categoryId, Map<String, dynamic> category) async {
+    final batch = db.batch();
     try {
-      await categoriesRef.doc(categoryId.toLowerCase()).set({
+      final categoryRef = categoriesRef.doc(categoryId);
+      batch.set(categoryRef, {
         'title': category['title'],
+        'isRoot': category['isRoot'],
         'hasSubCategories': true,
         'hasProducts': false,
-        'subCategories': category['subCategories'],
+        'subCategories': [],
+        'generic': category['generic'],
         'imageUrl': category['imageUrl'],
       });
+
+      final parentCategoryRef = categoriesRef.doc(category['parentId']);
+      batch.update(parentCategoryRef, {
+        'subCategories': FieldValue.arrayUnion([categoryId])
+      });
+
+      await batch.commit();
     } catch (e) {
-      print(e);
+      Get.snackbar("Error", e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.red400,
+          colorText: AppColors.white);
     }
   }
 
-  static Stream<List<Map<String, dynamic>>> getCategories() {
-    return categoriesRef.snapshots().map((event) {
+  static Stream<List<Map<String, dynamic>>> getCategoriesWithSubCategories() {
+    final parentCategoriesRef =
+        categoriesRef.where('hasProducts', isEqualTo: false);
+
+    return parentCategoriesRef.snapshots().map((event) {
       final data = event.docs.map((e) {
         return {
-          'categoryId': e.id,
+          'id': e.id,
           'title': e.data()['title'],
           'hasSubCategories': e.data()['hasSubCategories'],
           'hasProducts': e.data()['hasProducts'],
           'subCategories': e.data()['subCategories'],
+          'imageUrl': e.data()['imageUrl'],
+        };
+      }).toList();
+
+      return data;
+    });
+  }
+
+  static Stream<List<Map<String, dynamic>>> getProductCategories() {
+    final productCategoriesRef =
+        categoriesRef.where('hasProducts', isEqualTo: true);
+
+    return productCategoriesRef.snapshots().map((event) {
+      final data = event.docs.map((e) {
+        return {
+          'id': e.id,
+          'title': e.data()['title'],
+          'hasSubCategories': e.data()['hasSubCategories'],
+          'hasProducts': e.data()['hasProducts'],
           'products': e.data()['products'],
           'imageUrl': e.data()['imageUrl'],
         };
       }).toList();
-      return List.from(data);
+
+      return data;
     });
   }
 
@@ -121,8 +213,10 @@ class FireBaseStoreHelper {
   /* ====== to add and get products ====== */
 
   static Future<void> addProduct(Map<String, dynamic> product) async {
+    final batch = db.batch();
     try {
-      await productsRef.doc(product['index']).set({
+      final productRef = productsRef.doc(product['index'].toString());
+      batch.set(productRef, {
         'index': product['index'],
         'title': product['title'],
         'description': product['description'],
@@ -132,6 +226,11 @@ class FireBaseStoreHelper {
         'generic': product['generic'],
         'category': product['category'],
       });
+      final parentCategoryRef = categoriesRef.doc(product['category']);
+      batch.update(parentCategoryRef, {
+        'products': FieldValue.arrayUnion([product['index']])
+      });
+      await batch.commit();
     } catch (e) {
       print(e);
     }

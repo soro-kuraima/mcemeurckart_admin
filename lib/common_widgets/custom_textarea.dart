@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:mcemeurckart_admin/common_widgets/svg_asset.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
 
-class CustomTextField extends StatefulWidget {
-  const CustomTextField({
+class CustomTextArea extends StatefulWidget {
+  const CustomTextArea({
     Key? key,
     required this.labelText,
-    this.isSecret = false,
     this.inputFormatters,
     this.initialValue,
     this.isReadOnly = false,
@@ -18,10 +16,11 @@ class CustomTextField extends StatefulWidget {
     this.onSaved,
     this.formFieldKey,
     this.onFieldSubmitted,
+    this.minlines,
+    this.maxlines,
   }) : super(key: key);
 
   final String labelText;
-  final bool isSecret;
   final List<TextInputFormatter>? inputFormatters;
   final String? initialValue;
   final bool isReadOnly;
@@ -31,20 +30,18 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? textInputType;
   final GlobalKey<FormFieldState>? formFieldKey;
   final Function(String)? onFieldSubmitted;
+  final int? minlines;
+  final int? maxlines;
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomTextArea> createState() => _CustomTextAreaState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomTextAreaState extends State<CustomTextArea> {
   // * Obscure text while typing
-  bool _isObscure = false;
 
   @override
   void initState() {
-    _isObscure = widget.textInputType == TextInputType.multiline
-        ? false
-        : widget.isSecret;
     super.initState();
   }
 
@@ -60,13 +57,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         gapH4,
         TextFormField(
           key: widget.formFieldKey,
+          minLines: widget.minlines,
+          maxLines: widget.maxlines,
           style: Get.textTheme.displaySmall,
           controller: widget.controller,
           keyboardType: widget.textInputType,
           readOnly: widget.isReadOnly,
           initialValue: widget.initialValue,
           inputFormatters: widget.inputFormatters,
-          obscureText: _isObscure,
           validator: widget.validator,
           onSaved: widget.onSaved,
           onFieldSubmitted: widget.onFieldSubmitted,
@@ -96,27 +94,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 Sizes.p6,
               ),
             ),
-            suffixIcon: widget.isSecret
-                ? InkWell(
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {
-                      setState(
-                        () {
-                          _isObscure = !_isObscure;
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(
-                        Sizes.p12,
-                      ),
-                      child: SvgAsset(
-                        assetPath:
-                            _isObscure ? AppIcons.eyeOffIcon : AppIcons.eyeIcon,
-                      ),
-                    ),
-                  )
-                : null,
           ),
         ),
       ],

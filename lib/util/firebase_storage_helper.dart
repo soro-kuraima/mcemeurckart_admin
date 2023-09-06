@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -14,10 +15,10 @@ class FirebaseStorageHelper {
 
   static final productsRef = firebaseStorage.ref().child('products');
 
-  static Future<String> uploadCategoryImage(File file) async {
-    final categoryRef = categoriesRef.child('${file.uri}');
+  static Future<String> uploadCategoryImage(Uint8List file) async {
+    final categoryRef = categoriesRef.child('${file.hashCode}');
     try {
-      await categoryRef.putFile(file);
+      await categoryRef.putData(file);
     } on FirebaseException catch (e) {
       print(e);
     }
@@ -25,10 +26,10 @@ class FirebaseStorageHelper {
     return await categoryRef.getDownloadURL();
   }
 
-  static Future<String> uploadProductImage(File file) async {
-    final productRef = productsRef.child('${file.uri}.png');
+  static Future<String> uploadProductImage(Uint8List file) async {
+    final productRef = productsRef.child('${file.hashCode}');
     try {
-      await productRef.putFile(file);
+      await productRef.putData(file);
     } on FirebaseException catch (e) {
       print(e);
     }

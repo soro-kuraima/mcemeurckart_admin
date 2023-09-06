@@ -19,11 +19,9 @@ class _AddGenericsState extends State<AddGenerics> {
 
   final _genericIdController = TextEditingController();
   final _genericNameController = TextEditingController();
-  final _genericCategoriesController = TextEditingController();
 
   String? _genericId;
   String? _genericName;
-  final List<String> _categories = [];
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
@@ -38,6 +36,7 @@ class _AddGenericsState extends State<AddGenerics> {
             0,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset(
                 AppAssets.appLogoMceme,
@@ -76,7 +75,6 @@ class _AddGenericsState extends State<AddGenerics> {
               gapH16,
               CustomTextField(
                 labelText: 'Generic Name',
-                isSecret: true,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a Generic Name';
@@ -90,66 +88,14 @@ class _AddGenericsState extends State<AddGenerics> {
                 },
               ),
               gapH40,
-              CustomTextField(
-                labelText: 'Categories',
-                controller: _genericCategoriesController,
-              ),
-              gapH40,
-              ElevatedButton(
-                onPressed: () {
-                  if (_genericCategoriesController.text.isNotEmpty) {
-                    setState(() {
-                      _categories.add(_genericCategoriesController.text);
-                      _genericCategoriesController.clear();
-                    });
-                  }
-                },
-                child: Text('Add Category'),
-              ),
-              _categories.isNotEmpty
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _categories.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                  title: Text(_categories[index]),
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _categories.removeAt(index);
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close),
-                                  ));
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  : SizedBox.shrink(),
               PrimaryButton(
                 buttonColor: AppColors.neutral800,
                 buttonLabel: 'Add generic',
                 onPressed: () async {
-                  log("login button pressed");
-                  if (_categories.isEmpty) {
-                    Get.snackbar(
-                      "No Categories Provided",
-                      "Add atleast one category",
-                      backgroundColor: AppColors.red400,
-                      colorText: AppColors.white,
-                      duration: const Duration(seconds: 3),
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  }
                   if (_addGenericKey.currentState!.validate()) {
                     _addGenericKey.currentState!.save();
                     await FireBaseStoreHelper.addGenerics(_genericId!, {
                       'title': _genericName,
-                      'categories': _categories,
                     });
 
                     Get.snackbar(
@@ -162,10 +108,6 @@ class _AddGenericsState extends State<AddGenerics> {
                     );
                     _genericIdController.clear();
                     _genericNameController.clear();
-                    _genericCategoriesController.clear();
-                    setState(() {
-                      _categories.clear();
-                    });
                   }
                 },
               ),
