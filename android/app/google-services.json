@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1035718047234",
+    "project_id": "mcemeurccart",
+    "storage_bucket": "mcemeurccart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035718047234:android:a341bb3488eab3ee75591b",
+        "android_client_info": {
+          "package_name": "com.example.mcemeurckart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035718047234-23e1nrvsr0p4uter9tc2hn5rlon0458s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyD2hSTOquuFA4Ks-46oAplmpz8hObl_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035718047234-23e1nrvsr0p4uter9tc2hn5rlon0458s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1035718047234-26knfmkqvkug7cfngnjt97o54cemtr72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.SamTech.khanDairy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035718047234:android:24b57fe5b92695b475591b",
+        "android_client_info": {
+          "package_name": "com.example.mcemeurckart_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035718047234-23e1nrvsr0p4uter9tc2hn5rlon0458s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyD2hSTOquuFA4Ks-46oAplmpz8hObl_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035718047234-23e1nrvsr0p4uter9tc2hn5rlon0458s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1035718047234-26knfmkqvkug7cfngnjt97o54cemtr72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.SamTech.khanDairy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
