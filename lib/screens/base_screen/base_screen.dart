@@ -36,58 +36,23 @@ class _BaseScreenState extends State<BaseScreen> {
 
   final screens = [
     const HomeScreen(),
-    const AddUser(),
-    const Users(),
-    const RequestedUsers(),
-    const Generics(),
-    const AddGenerics(),
-    const AddCategory(),
-    const Categories(),
-    const AddProduct(),
-    const Products(),
-    const Orders(),
-    const GenerateReports(),
   ];
-
-  GenericsController genericsController = Get.put(GenericsController());
-  CategoriesController categoriesController = Get.put(CategoriesController());
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.blue100,
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              ),
-            ),
-            title: const Text('mcemeurckart Admin'),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.logout),
-              ),
-            ],
-          ),
-          drawer: CustomDrawer(
-            controller: pageController,
-          ),
-          body: GetBuilder<GenericsController>(
-            builder: (genericsController) {
-              return GetBuilder<CategoriesController>(
-                builder: (categoriesController) {
-                  return PageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: screens,
-                  );
-                },
+      child: Scaffold(body: GetBuilder<GenericsController>(
+        builder: (genericsController) {
+          return GetBuilder<CategoriesController>(
+            builder: (categoriesController) {
+              return PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: screens,
               );
             },
-          )),
+          );
+        },
+      )),
     );
   }
 }

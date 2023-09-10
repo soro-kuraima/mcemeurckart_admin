@@ -100,7 +100,6 @@ class SignInScreen extends StatelessWidget {
                     buttonColor: AppColors.neutral800,
                     buttonLabel: 'Log in',
                     onPressed: () async {
-                      log("login button pressed");
                       if (signInKey.currentState!.validate()) {
                         signInKey.currentState!.save();
                         Map<String, dynamic> res = await FirebaseAuthHelper

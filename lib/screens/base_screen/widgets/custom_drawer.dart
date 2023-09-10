@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mcemeurckart_admin/constants/app_colors.dart';
+import 'package:mcemeurckart_admin/controller/categories_controller.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key, required this.controller});
-
-  final PageController controller;
+  CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +56,8 @@ class CustomDrawer extends StatelessWidget {
                   title: const Text('Add User'),
                   onTap: () {
                     Scaffold.of(context).closeDrawer();
-                    controller.animateToPage(1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease);
-                    //Get.toNamed(AppRoutes.addUser);
+
+                    Get.toNamed(AppRoutes.addUser);
                   },
                 ),
                 ListTile(
@@ -68,9 +65,7 @@ class CustomDrawer extends StatelessWidget {
                   title: const Text('View Users'),
                   onTap: () {
                     Scaffold.of(context).closeDrawer();
-                    controller.animateToPage(2,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease);
+                    Get.toNamed(AppRoutes.users);
                   },
                 ),
                 ListTile(
@@ -78,9 +73,7 @@ class CustomDrawer extends StatelessWidget {
                   title: const Text('Requested Users'),
                   onTap: () {
                     Scaffold.of(context).closeDrawer();
-                    controller.animateToPage(3,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease);
+                    Get.toNamed(AppRoutes.requestedUsers);
                   },
                 ),
               ],
@@ -97,9 +90,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('View Generics'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(4,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.generics);
                     },
                   ),
                   ListTile(
@@ -107,9 +98,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Add Generic'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(5,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.addGenerics);
                     },
                   ),
                 ]),
@@ -125,9 +114,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Add Category'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(6,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.addCategory);
                     },
                   ),
                   ListTile(
@@ -135,9 +122,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('View Categories'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(7,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.rootCategories);
                     },
                   ),
                 ]),
@@ -153,9 +138,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Add Product'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(8,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.addProduct);
                     },
                   ),
                   ListTile(
@@ -163,9 +146,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Products'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(9,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.products);
                     },
                   ),
                 ]),
@@ -181,9 +162,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Orders'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(10,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.orders);
                     },
                   ),
                   ListTile(
@@ -191,9 +170,7 @@ class CustomDrawer extends StatelessWidget {
                     title: const Text('Generate Reports'),
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
-                      controller.animateToPage(2,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
+                      Get.toNamed(AppRoutes.generateReports);
                     },
                   ),
                 ]),

@@ -8,3 +8,4 @@ export 'custom_textarea.dart';
 export 'secondary_textfield.dart';
 export 'custom_divider.dart';
 export 'svg_asset.dart';
+export 'text_cropping_widget.dart';

@@ -43,7 +43,7 @@ class FireBaseStoreHelper {
           'categories': e.data()['categories'],
         };
       }).toList();
-      log(data.toString());
+
       return data;
     });
   }
@@ -168,6 +168,30 @@ class FireBaseStoreHelper {
     }
   }
 
+  static Future<void> updateCategoryImage(String id, String imageUrl) async {
+    try {
+      await categoriesRef.doc(id).update({'imageUrl': imageUrl});
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Stream<List<Map<String, dynamic>>> getCategories() {
+    try {
+      return categoriesRef.snapshots().map((event) {
+        return event.docs.map((e) {
+          return {
+            'id': e.id,
+            ...e.data(),
+          };
+        }).toList();
+      });
+    } catch (e) {
+      print(e);
+    }
+    return const Stream.empty();
+  }
+
   static Stream<List<Map<String, dynamic>>> getCategoriesWithSubCategories() {
     final parentCategoriesRef =
         categoriesRef.where('hasProducts', isEqualTo: false);
@@ -186,6 +210,23 @@ class FireBaseStoreHelper {
 
       return data;
     });
+  }
+
+  static Stream<List<Map<String, dynamic>>> getRootCategories() {
+    final rootCategoriesRef = categoriesRef.where('isRoot', isEqualTo: true);
+    try {
+      return rootCategoriesRef.snapshots().map((event) {
+        return event.docs.map((e) {
+          return {
+            'id': e.id,
+            ...e.data(),
+          };
+        }).toList();
+      });
+    } catch (e) {
+      print(e);
+    }
+    return const Stream.empty();
   }
 
   static Stream<List<Map<String, dynamic>>> getProductCategories() {
@@ -240,7 +281,8 @@ class FireBaseStoreHelper {
     return productsRef.snapshots().map((event) {
       final data = event.docs.map((e) {
         return {
-          'index': e.id,
+          'id': e.id,
+          'index': e.data()['index'],
           'title': e.data()['title'],
           'description': e.data()['description'],
           'stock': e.data()['stock'],
@@ -267,6 +309,28 @@ class FireBaseStoreHelper {
     return res;
   }
 
+  static Future<void> updateProduct(Map<String, dynamic> product) async {
+    try {
+      await productsRef.doc(product['id']).update({
+        'title': product['title'],
+        'description': product['description'],
+        'stock': product['stock'],
+        'price': product['price'],
+        'imageUrl': product['imageUrl'],
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<void> deleteProduct(String id) async {
+    try {
+      await productsRef.doc(id).delete();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   /* ================= to get orders and place orders ============== */
 
   static final ordersRef = db.collection('orders');
@@ -274,7 +338,6 @@ class FireBaseStoreHelper {
   static Stream<List<Map<String, dynamic>>> getOrders() {
     return ordersRef.snapshots().map((event) {
       final data = event.docs.map((e) {
-        log("logging from getOrders${e.id}");
         return {
           'orderId': e.id,
           'user': e.data()['user'],
@@ -285,7 +348,7 @@ class FireBaseStoreHelper {
           'imageUrl': e.data()['imageUrl'],
         };
       }).toList();
-      log(data.toString());
+
       return List.from(data);
     });
   }
@@ -296,7 +359,6 @@ class FireBaseStoreHelper {
         .snapshots()
         .map((event) {
       final data = event.docs.map((e) {
-        log("logging from getOrdersByStatus${e.id}");
         return {
           'orderId': e.id,
           'user': e.data()['user'],
@@ -307,7 +369,7 @@ class FireBaseStoreHelper {
           'imageUrl': e.data()['imageUrl'],
         };
       }).toList();
-      log(data.toString());
+
       return List.from(data);
     });
   }

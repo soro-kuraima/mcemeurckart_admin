@@ -5,7 +5,9 @@ import "package:mcemeurckart_admin/screens/add_product/add_product.dart";
 import "package:mcemeurckart_admin/screens/add_user/add_user.dart";
 import "package:mcemeurckart_admin/screens/auth_screen/signin_screen.dart";
 import "package:mcemeurckart_admin/screens/base_screen/base_screen.dart";
-import "package:mcemeurckart_admin/screens/categories/categories.dart";
+import 'package:mcemeurckart_admin/screens/categories/categories.dart';
+import "package:mcemeurckart_admin/screens/categories/root_categories.dart";
+import "package:mcemeurckart_admin/screens/edit_category/edit_category.dart";
 import "package:mcemeurckart_admin/screens/edit_user/edit_user.dart";
 import "package:mcemeurckart_admin/screens/generics/generics.dart";
 import "package:mcemeurckart_admin/screens/home_screen/home_screen.dart";
@@ -115,6 +117,14 @@ abstract class AppPages {
     ),
 
     /* ==== to create and view generics ====== */
+
+    GetPage(
+      name: AppRoutes.rootCategories,
+      page: () => const RootCategories(),
+      transitionDuration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
       name: AppRoutes.categories,
       page: () => const Categories(),
@@ -124,7 +134,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.category,
-      page: () => const ViewCategory(),
+      page: () => ViewCategory(),
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       transition: Transition.rightToLeft,
@@ -132,6 +142,13 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.addCategory,
       page: () => const AddCategory(),
+      transitionDuration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.editCategory,
+      page: () => const EditCategory(),
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       transition: Transition.rightToLeft,
@@ -148,7 +165,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.product,
-      page: () => const Product(),
+      page: () => Product(),
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       transition: Transition.rightToLeft,
@@ -211,9 +228,13 @@ abstract class AppRoutes {
 
   static const categories = '/categories';
 
+  static const rootCategories = '/root-categories';
+
   static const category = '/category';
 
   static const addCategory = '/add-category';
+
+  static const editCategory = '/edit-category';
 
   static const orders = '/orders';
 
