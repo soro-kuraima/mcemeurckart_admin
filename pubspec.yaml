@@ -21,6 +21,7 @@ dependencies:
   get: ^4.6.5
   image_picker: ^1.0.4
   responsive_framework: ^1.1.0
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_test:
