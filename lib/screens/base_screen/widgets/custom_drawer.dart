@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mcemeurckart_admin/constants/app_colors.dart';
-import 'package:mcemeurckart_admin/controller/categories_controller.dart';
+import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -34,7 +34,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'user name',
+                      'Admin',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: AppColors.neutral900,
@@ -51,15 +51,6 @@ class CustomDrawer extends StatelessWidget {
               ),
               title: const Text('Manage Users'),
               children: [
-                ListTile(
-                  contentPadding: EdgeInsets.only(left: 40.0),
-                  title: const Text('Add User'),
-                  onTap: () {
-                    Scaffold.of(context).closeDrawer();
-
-                    Get.toNamed(AppRoutes.addUser);
-                  },
-                ),
                 ListTile(
                   contentPadding: EdgeInsets.only(left: 40.0),
                   title: const Text('View Users'),

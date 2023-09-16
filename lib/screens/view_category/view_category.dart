@@ -7,8 +7,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
-import 'package:mcemeurckart_admin/controller/products_controller.dart';
+import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
+import 'package:mcemeurckart_admin/screens/base_screen/widgets/custom_drawer.dart';
 import 'package:mcemeurckart_admin/util/firebase_storage_helper.dart';
 import 'package:mcemeurckart_admin/util/firestore_helper.dart';
 
@@ -36,6 +37,22 @@ class _ViewCategoryState extends State<ViewCategory> {
         .where((product) => product['category'] == category['id'])
         .toList();
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.blue100,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
+      drawer: CustomDrawer(),
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(

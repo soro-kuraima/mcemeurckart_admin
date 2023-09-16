@@ -36,7 +36,7 @@ class _OrdersState extends State<Orders> with SingleTickerProviderStateMixin {
         .toList();
     final deliveredOrders =
         Get.find<OrdersController>().orders.where((element) {
-      return element['orderStatus'] == 'delivered';
+      return element['orderStatus'] == 'Delivered';
     }).toList();
     return Scaffold(
         body: NestedScrollView(
@@ -92,8 +92,10 @@ class _OrdersState extends State<Orders> with SingleTickerProviderStateMixin {
                           height: Get.height * .85,
                           child: ListView.separated(
                               scrollDirection: Axis.vertical,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Sizes.p6,
+                              padding: const EdgeInsets.only(
+                                left: Sizes.p6,
+                                right: Sizes.p6,
+                                bottom: Sizes.p100,
                               ),
                               physics: const AlwaysScrollableScrollPhysics(),
                               itemCount: pendingOrders.length,
@@ -153,8 +155,10 @@ class _OrdersState extends State<Orders> with SingleTickerProviderStateMixin {
                           height: Get.height * .85,
                           child: ListView.separated(
                               scrollDirection: Axis.vertical,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Sizes.p6,
+                              padding: const EdgeInsets.only(
+                                left: Sizes.p6,
+                                right: Sizes.p6,
+                                bottom: Sizes.p280,
                               ),
                               physics: const AlwaysScrollableScrollPhysics(),
                               itemCount: deliveredOrders.length,

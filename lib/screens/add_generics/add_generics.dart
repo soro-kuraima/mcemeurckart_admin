@@ -57,7 +57,7 @@ class _AddGenericsState extends State<AddGenerics> {
                 children: [
                   Center(
                     child: Image.asset(
-                      AppAssets.mcemeImage,
+                      AppAssets.mceme,
                       width: Sizes.deviceWidth * 0.6,
                       height: Sizes.deviceWidth * 0.6,
                     ),

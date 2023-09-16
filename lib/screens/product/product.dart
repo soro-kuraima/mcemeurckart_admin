@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
-import 'package:mcemeurckart_admin/controller/generics_controller.dart';
-import 'package:mcemeurckart_admin/controller/products_controller.dart';
+import 'package:mcemeurckart_admin/controller/generics_controller_getx.dart';
+import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
 import 'package:mcemeurckart_admin/util/firebase_storage_helper.dart';
 import 'package:mcemeurckart_admin/util/firestore_helper.dart';
@@ -27,11 +27,13 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
   final _productDescriptionController = TextEditingController();
   final _stockController = TextEditingController();
   final _priceController = TextEditingController();
+  final _monthlyLimitController = TextEditingController();
 
   String? _productName;
   String? _productDescription;
   int? _stock;
   int? _price;
+  int? _monthlyLimit;
 
   Uint8List? _imageFile;
 
@@ -67,6 +69,10 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
         TextEditingValue(text: product['stock'].toString());
     _priceController.value =
         TextEditingValue(text: product['price'].toString());
+    _monthlyLimitController.value = TextEditingValue(
+        text: product['monthlyLimit'] == null
+            ? 'na'
+            : product['monthlyLimit'].toString());
 
     return Scaffold(
       body: NestedScrollView(
@@ -156,6 +162,24 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                       },
                     ),
                     gapH40,
+                    CustomTextField(
+                      labelText: 'Monthly Limit',
+                      textInputType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a Stock';
+                        }
+                        if (int.parse(value) <= 0) {
+                          return 'Please enter a valid Stock';
+                        }
+                        return null;
+                      },
+                      controller: _monthlyLimitController,
+                      onSaved: (value) {
+                        _monthlyLimit = int.parse(value!);
+                      },
+                    ),
+                    gapH40,
                     CustomTextArea(
                       labelText: 'Description',
                       minlines: 3,
@@ -229,6 +253,7 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                             'stock': _stock,
                             'price': _price,
                             'imageUrl': imageUrl,
+                            'monthlyLimit': _monthlyLimit
                           });
                         }
                         Get.snackbar(
@@ -300,6 +325,7 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                           TextCroppingWidget(
                             text: product['index'].toString(),
                           ),
+                          gapH12,
                           Text(
                             'Price',
                             style: Get.textTheme.displayLarge,
@@ -317,6 +343,18 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                           TextCroppingWidget(
                             text: product['stock'].toString(),
                           ),
+                          gapH12,
+                          Text(
+                            'Monthly Limit',
+                            style: Get.textTheme.displayLarge,
+                          ),
+                          gapH8,
+                          TextCroppingWidget(
+                            text: product['monthlyLimit'] == null
+                                ? 'NA'
+                                : product['monthlyLimit'].toString(),
+                          ),
+                          gapH12,
                           Text(
                             'Generic',
                             style: Get.textTheme.displayLarge,
@@ -326,14 +364,14 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                             text: generic['title'],
                           ),
 
-                          gapH8,
+                          gapH12,
                           //* Available Colors
 
                           Text(
                             'Description',
                             style: Get.textTheme.displayLarge,
                           ),
-                          gapH12,
+                          gapH8,
                           TextCroppingWidget(
                             text: product['description'],
                           ),
@@ -364,7 +402,7 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
                                         "",
                                         backgroundColor: AppColors.red500,
                                       );
-                                      Get.offNamed(AppRoutes.rootCategories);
+                                      Get.offNamed(AppRoutes.products);
                                     },
                                     child: const Text('Delete'),
                                   ),

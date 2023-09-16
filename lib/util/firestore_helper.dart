@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,33 @@ class FireBaseStoreHelper {
   static final FireBaseStoreHelper fireBaseStoreHelper =
       FireBaseStoreHelper._();
   static final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  static Stream<List<Map<String, dynamic>>> getUsers() {
+    try {
+      final usersRef = db.collection('users');
+      return usersRef.snapshots().map((event) {
+        return event.docs.map((e) {
+          return {
+            'id': e.id,
+            ...e.data(),
+          };
+        }).toList();
+      });
+    } catch (e) {}
+    return const Stream.empty();
+  }
+
+  static Future<Map<String, dynamic>> getUser(String email) async {
+    Map<String, dynamic> res = {};
+    final user = db.collection('users').where('email', isEqualTo: email);
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await user.get();
+      res = querySnapshot.docs.first.data();
+    } catch (e) {
+      print(e);
+    }
+    return res;
+  }
 
   static final genericsRef = db.collection('generics');
 
@@ -263,6 +291,7 @@ class FireBaseStoreHelper {
         'description': product['description'],
         'stock': product['stock'],
         'price': product['price'],
+        'monthlyLimit': product['monthlyLimit'],
         'imageUrl': product['imageUrl'],
         'generic': product['generic'],
         'category': product['category'],
@@ -317,6 +346,7 @@ class FireBaseStoreHelper {
         'stock': product['stock'],
         'price': product['price'],
         'imageUrl': product['imageUrl'],
+        'monthlyLimit': product['monthlyLimit'],
       });
     } catch (e) {
       print(e);
@@ -374,12 +404,102 @@ class FireBaseStoreHelper {
     });
   }
 
-  static Future<void> updateOrderStatus(
-      String orderId, String orderStatus) async {
+  static Future<void> updateOrderStatus(String orderId, dynamic products,
+      {String orderStatus = 'Delivered'}) async {
     try {
-      await ordersRef.doc(orderId).update({'orderStatus': orderStatus});
+      final batch = db.batch();
+      final orderRef = ordersRef.doc(orderId);
+      batch.update(orderRef, {'orderStatus': orderStatus});
+
+      products.forEach((element) {
+        final productRef =
+            productsRef.doc(element['product']['index'].toString());
+        batch.update(productRef, {
+          'stock': FieldValue.increment(-1),
+        });
+      });
+
+      await batch.commit();
     } catch (e) {
       print(e);
     }
+  }
+
+  static Future<List<Map<String, dynamic>>> getOrdersByDate(
+      DateTime date) async {
+    try {
+      final endDate = DateTime(date.year, date.month, date.day + 1);
+      final orders = ordersRef
+          .where('orderDate', isGreaterThanOrEqualTo: date)
+          .where('orderDate', isLessThanOrEqualTo: endDate);
+
+      final querySnapshot = await orders.get();
+      final data = querySnapshot.docs.map((e) {
+        return {
+          'orderId': e.id,
+          'user': e.data()['user'],
+          'products': e.data()['products'],
+          'orderValue': e.data()['orderValue'],
+          'orderStatus': e.data()['orderStatus'],
+          'orderDate': e.data()['orderDate'],
+          'imageUrl': e.data()['imageUrl'],
+        };
+      }).toList();
+
+      log(data.toString());
+      return data;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getOrdersByDateRange(
+      DateTime startDate, DateTime endDate) async {
+    try {
+      final orders = ordersRef
+          .where('orderDate', isGreaterThanOrEqualTo: startDate)
+          .where('orderDate', isLessThanOrEqualTo: endDate);
+
+      final querySnapshot = await orders.get();
+      final data = querySnapshot.docs.map((e) {
+        return {
+          'orderId': e.id,
+          'user': e.data()['user'],
+          'products': e.data()['products'],
+          'orderValue': e.data()['orderValue'],
+          'orderStatus': e.data()['orderStatus'],
+          'orderDate': e.data()['orderDate'],
+          'imageUrl': e.data()['imageUrl'],
+        };
+      }).toList();
+
+      log(data.toString());
+      return data;
+    } catch (e) {
+      log(e.toString());
+      return [];
+    }
+  }
+
+  static int getTotalNoOfUsers(List<dynamic> users) {
+    return users.length;
+  }
+
+  static int getTotalNoOfOrders(List<dynamic> orders) {
+    return orders.length;
+  }
+
+  static int getTotalNoOfOrdersDelivered(List<dynamic> orders) {
+    return orders
+        .where((element) => element['orderStatus'] == 'Delivered')
+        .length;
+  }
+
+  static int getTotalRevenueGenerated(List<dynamic> orders) {
+    return orders.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + int.parse(element['orderValue'].toString()));
   }
 }

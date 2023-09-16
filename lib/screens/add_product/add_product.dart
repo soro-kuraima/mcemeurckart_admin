@@ -1,14 +1,11 @@
 import 'dart:typed_data';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mcemeurckart_admin/controller/categories_controller.dart';
-import 'package:mcemeurckart_admin/controller/generics_controller.dart';
+import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
+import 'package:mcemeurckart_admin/controller/generics_controller_getx.dart';
 import 'package:mcemeurckart_admin/util/firebase_storage_helper.dart';
 import 'package:mcemeurckart_admin/util/firestore_helper.dart';
 
@@ -27,12 +24,14 @@ class _AddProductState extends State<AddProduct> {
   final _productDescriptionController = TextEditingController();
   final _stockController = TextEditingController();
   final _priceController = TextEditingController();
+  final _monthlyLimitController = TextEditingController();
 
   int? _productIndex;
   String? _productName;
   String? _productDescription;
   int? _stock;
   int? _price;
+  int? _monthlyLimit;
   String? _generic;
   String? _category;
   Uint8List? _imageFile;
@@ -73,7 +72,7 @@ class _AddProductState extends State<AddProduct> {
                 children: [
                   Center(
                     child: Image.asset(
-                      AppAssets.mcemeImage,
+                      AppAssets.mceme,
                       width: Sizes.deviceWidth * 0.6,
                       height: Sizes.deviceWidth * 0.6,
                     ),
@@ -146,6 +145,15 @@ class _AddProductState extends State<AddProduct> {
                     controller: _stockController,
                     onSaved: (value) {
                       _stock = int.parse(value!);
+                    },
+                  ),
+                  gapH40,
+                  CustomTextField(
+                    labelText: 'Monthly limit',
+                    textInputType: TextInputType.number,
+                    controller: _monthlyLimitController,
+                    onSaved: (value) {
+                      _monthlyLimit = int.parse(value!);
                     },
                   ),
                   gapH40,
@@ -285,6 +293,7 @@ class _AddProductState extends State<AddProduct> {
                           'description': _productDescription,
                           'stock': _stock,
                           'price': _price,
+                          'monthlyLimit': _monthlyLimit ?? false,
                           'generic': _generic,
                           'imageUrl': imageUrl,
                           'category': _category,
@@ -309,6 +318,7 @@ class _AddProductState extends State<AddProduct> {
                             TextEditingValue.empty;
                         _stockController.value = TextEditingValue.empty;
                         _priceController.value = TextEditingValue.empty;
+                        _monthlyLimitController.value = TextEditingValue.empty;
                       });
                     },
                   ),

@@ -31,4 +31,13 @@ class OrdersController extends GetxController {
       'products': productList,
     };
   }
+
+  Future<void> updateOrderStatus(dynamic orderItem) {
+    log('logging from updateOrderStatus');
+    log(orderItem.value['products'].toString());
+    final products = orderItem.value['products'];
+
+    return FireBaseStoreHelper.updateOrderStatus(
+        orderItem.value['orderId'], products);
+  }
 }

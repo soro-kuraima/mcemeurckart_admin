@@ -83,9 +83,7 @@ class OrderCard extends StatelessWidget {
                         Text(
                           orderStatus,
                           style: Get.textTheme.bodySmall?.copyWith(
-                            color: orderStatus == 'Delivered'
-                                ? AppColors.green700
-                                : AppColors.organge300,
+                            color: AppColors.organge300,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

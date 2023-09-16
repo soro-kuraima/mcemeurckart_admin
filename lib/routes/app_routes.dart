@@ -2,18 +2,16 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:mcemeurckart_admin/screens/add_generics/add_generics.dart";
 import "package:mcemeurckart_admin/screens/add_product/add_product.dart";
-import "package:mcemeurckart_admin/screens/add_user/add_user.dart";
 import "package:mcemeurckart_admin/screens/auth_screen/signin_screen.dart";
 import "package:mcemeurckart_admin/screens/base_screen/base_screen.dart";
 import 'package:mcemeurckart_admin/screens/categories/categories.dart';
 import "package:mcemeurckart_admin/screens/categories/root_categories.dart";
 import "package:mcemeurckart_admin/screens/edit_category/edit_category.dart";
-import "package:mcemeurckart_admin/screens/edit_user/edit_user.dart";
 import "package:mcemeurckart_admin/screens/generics/generics.dart";
 import "package:mcemeurckart_admin/screens/home_screen/home_screen.dart";
+import "package:mcemeurckart_admin/screens/loading_screen/loading_screen.dart";
 import "package:mcemeurckart_admin/screens/product/product.dart";
 import "package:mcemeurckart_admin/screens/products/products.dart";
-import "package:mcemeurckart_admin/screens/requested_user/requested_user.dart";
 import "package:mcemeurckart_admin/screens/requested_users/requested_users.dart";
 import "package:mcemeurckart_admin/screens/users/users.dart";
 import "package:mcemeurckart_admin/screens/user/user.dart";
@@ -24,9 +22,10 @@ import 'package:mcemeurckart_admin/screens/view_category/view_category.dart';
 import "package:mcemeurckart_admin/screens/add_category/add_category.dart";
 
 abstract class AppPages {
-  static const initial = AppRoutes.baseRoute;
+  static const initial = AppRoutes.splashRoute;
 
   static final pages = <GetPage>[
+    GetPage(name: AppRoutes.splashRoute, page: () => const LoadingScreen()),
     /* 
     * ===== Auth Pages =====
      */
@@ -49,7 +48,7 @@ abstract class AppPages {
      */
     GetPage(
       name: AppRoutes.homeRoute,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
       transitionDuration: const Duration(milliseconds: 500),
       curve: Curves.easeOut,
       transition: Transition.rightToLeft,
@@ -59,7 +58,7 @@ abstract class AppPages {
      */
     GetPage(
       name: AppRoutes.users,
-      page: () => const Users(),
+      page: () => Users(),
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       transition: Transition.downToUp,
@@ -72,29 +71,8 @@ abstract class AppPages {
       transition: Transition.downToUp,
     ),
     GetPage(
-      name: AppRoutes.addUser,
-      page: () => const AddUser(),
-      transitionDuration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-      transition: Transition.downToUp,
-    ),
-    GetPage(
-      name: AppRoutes.editUser,
-      page: () => const EditUser(),
-      transitionDuration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-      transition: Transition.downToUp,
-    ),
-    GetPage(
       name: AppRoutes.requestedUsers,
-      page: () => const RequestedUsers(),
-      transitionDuration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-      transition: Transition.downToUp,
-    ),
-    GetPage(
-      name: AppRoutes.requestedUser,
-      page: () => const RequestedUser(),
+      page: () => RequestedUsers(),
       transitionDuration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       transition: Transition.downToUp,
@@ -204,6 +182,7 @@ abstract class AppPages {
 }
 
 abstract class AppRoutes {
+  static const splashRoute = '/splash';
   static const signInRoute = '/sign-in';
 
   static const baseRoute = '/';
@@ -216,11 +195,7 @@ abstract class AppRoutes {
 
   static const addUser = '/add-user';
 
-  static const editUser = '/edit-user';
-
   static const requestedUsers = '/requested-users';
-
-  static const requestedUser = '/requested-user';
 
   static const generics = '/generics';
 

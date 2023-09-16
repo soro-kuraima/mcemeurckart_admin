@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
-import 'package:mcemeurckart_admin/controller/categories_controller.dart';
-import 'package:mcemeurckart_admin/controller/generics_controller.dart';
+import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
+import 'package:mcemeurckart_admin/controller/generics_controller_getx.dart';
 import 'package:mcemeurckart_admin/util/firebase_storage_helper.dart';
 import 'package:mcemeurckart_admin/util/firestore_helper.dart';
 
@@ -67,7 +67,7 @@ class _AddCategoryState extends State<AddCategory> {
                 children: [
                   Center(
                     child: Image.asset(
-                      AppAssets.mcemeImage,
+                      AppAssets.mceme,
                       width: Sizes.deviceWidth * 0.6,
                       height: Sizes.deviceWidth * 0.6,
                     ),

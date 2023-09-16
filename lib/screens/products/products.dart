@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/app_sizes.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
-import 'package:mcemeurckart_admin/controller/products_controller.dart';
+import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
 import 'package:mcemeurckart_admin/screens/product/widgets/products_card.dart';
 

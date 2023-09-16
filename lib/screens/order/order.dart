@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mcemeurckart_admin/common_widgets/primary_button.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
 import 'package:mcemeurckart_admin/controller/orders_controller_getx.dart';
-import 'package:mcemeurckart_admin/routes/app_routes.dart';
 
-import 'widgets/order_product_card.dart';
+import 'widgets/order_item_card.dart';
 
 class Order extends StatefulWidget {
   const Order({super.key});
@@ -56,7 +56,7 @@ class _OrderState extends State<Order> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: order['products'].length,
                       separatorBuilder: (_, index) => gapH8,
-                      itemBuilder: (_, index) => OrderProductCard(
+                      itemBuilder: (_, index) => OrderItemCard(
                         product: order['products'][index],
                       ),
                     ),
@@ -98,16 +98,38 @@ class _OrderState extends State<Order> {
                           ),
                         ),
                         Text(
-                          '₹${order['orderStatus']} /-',
+                          '${order['orderStatus']}',
                           style: Get.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.yellow300,
+                            color: order['orderStatus'] == 'Delivered'
+                                ? AppColors.green500
+                                : AppColors.yellow500,
                           ),
                         ),
                       ],
                     ),
                   ),
                   gapH12,
+                  order['orderStatus'] == 'pending'
+                      ? PrimaryButton(
+                          buttonLabel: 'Mark Delivered',
+                          buttonColor: AppColors.green700,
+                          onPressed: () async {
+                            try {
+                              await orderController
+                                  .updateOrderStatus(orderController.orderItem);
+
+                              Get.snackbar("Order Marked as delivered", "",
+                                  backgroundColor: AppColors.green500,
+                                  colorText: AppColors.white);
+                            } catch (e) {
+                              Get.snackbar("Error", e.toString(),
+                                  backgroundColor: AppColors.red500,
+                                  colorText: AppColors.white);
+                            }
+                            Get.forceAppUpdate();
+                          })
+                      : const SizedBox.shrink(),
                 ],
               );
             }),
