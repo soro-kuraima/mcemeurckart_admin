@@ -109,9 +109,9 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
                       orders = await FireBaseStoreHelper.getOrdersByDate(
                           _startDate!);
                     }
-                    orders = orders
+                    /* orders = orders
                         .where((element) => element['status'] == 'Delivered')
-                        .toList();
+                        .toList();*/
 
                     await generatePdf(orders);
                   }

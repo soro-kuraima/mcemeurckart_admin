@@ -9,6 +9,7 @@ environment:
 dependencies:
   cached_network_image: ^3.2.3
   cloud_firestore: ^4.9.1
+  document_file_save_plus: ^2.0.0
   file_picker: ^5.5.0
   firebase_auth: ^4.9.0
   firebase_core: ^2.15.1
@@ -16,6 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_document_picker: ^5.2.3
+  flutter_downloader: ^1.11.2
   flutter_native_splash: ^2.3.2
   flutter_slidable: ^3.0.0
   flutter_spinkit: ^5.2.0

@@ -6,12 +6,19 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:document_file_save_plus/document_file_save_plus.dart';
 
 Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
-  final status = await Permission.manageExternalStorage.request();
-  if (status != PermissionStatus.granted) {
-    return;
+  final status = await Permission.storage.request();
+
+  if (status == PermissionStatus.denied ||
+      status == PermissionStatus.restricted) {
+    throw Exception('Storage permission is denied or restricted');
   }
+
+  log(status.toString());
+  log(orders.toString());
+
   final pdf = pw.Document();
 
   // Add logo to the top left of the PDF
@@ -62,15 +69,20 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
                   ),
                   verticalAlignment: pw.TableCellVerticalAlignment.middle,
                 ),
-                ...orders.map((order) => pw.TableRow(
-                      children: [
-                        pw.Text(order['orderId']),
-                        pw.Text(order['products'].toString()),
-                        pw.Text(order['orderDate'].toDate().toString()),
-                        pw.Text(order['orderValue'].toString()),
-                      ],
-                      verticalAlignment: pw.TableCellVerticalAlignment.middle,
-                    )),
+                ...orders.map((order) {
+                  final products = order['products'].keys.map((product) {
+                    return product;
+                  });
+                  return pw.TableRow(
+                    children: [
+                      pw.Text(order['orderId']),
+                      pw.Text(products.toString()),
+                      pw.Text(order['orderDate'].toDate().toString()),
+                      pw.Text(order['orderValue'].toString()),
+                    ],
+                    verticalAlignment: pw.TableCellVerticalAlignment.middle,
+                  );
+                }),
               ],
             ),
           ],
@@ -79,9 +91,14 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
     ),
   );
 
+  // The file has been downloaded and saved to the device's storage.
+  // You can now use it or display it as needed.
+  // For example, you can open the file using an external app:
+  // await OpenFile.open(filePath);
+/*
   Directory? directory;
   try {
-    if (Platform.isAndroid) {
+    if (Platform.isIOS) {
       directory = await getApplicationDocumentsDirectory();
     } else {
       directory = Directory('/storage/emulated/0/Download');
@@ -93,22 +110,19 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
     }
   } catch (err) {
     print("Cannot get download folder path");
-  }
+  }*/
 
-  final file = File('${directory!.path}/orders.pdf');
+  final fileSaver = DocumentFileSavePlus();
+
+  fileSaver.saveFile(await pdf.save(),
+      'orders${DateTime.now().millisecondsSinceEpoch}.pdf', 'application/pdf');
+
+  /*final directory = await getExternalStorageDirectory();
+  final filePath =
+      '${directory!.path}/orders${DateTime.now().millisecondsSinceEpoch}.pdf';
+
+  final file = File(filePath);
   await file.writeAsBytes(await pdf.save());
-  // Let the user choose where to save the file
-  final saveFile = await FilePicker.platform.saveFile(
-    initialDirectory: directory.path,
-    allowedExtensions: ['pdf'],
-  );
-
-  if (saveFile != null) {
-    // Open the file on the user's device
-    await FlutterDocumentPicker.openDocument(
-        params: FlutterDocumentPickerParams(
-      allowedFileExtensions: ['pdf'],
-      allowedMimeTypes: ['application/pdf'],
-    ));
-  }
+  await file.writeAsBytes(await pdf.save());*/
+  // Let the user choose where to save the fil
 }
