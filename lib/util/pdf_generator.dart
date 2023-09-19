@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
@@ -80,7 +81,7 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
 
   Directory? directory;
   try {
-    if (Platform.isIOS) {
+    if (Platform.isAndroid) {
       directory = await getApplicationDocumentsDirectory();
     } else {
       directory = Directory('/storage/emulated/0/Download');

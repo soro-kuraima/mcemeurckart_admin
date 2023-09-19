@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(Sizes.p8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -39,10 +39,6 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    CircleAvatar(
-                        radius: 24,
-                        backgroundImage: AssetImage(AppAssets.appLogoBlack)),
-                    SizedBox(width: 16),
                     Text(
                       'Admin',
                       style: TextStyle(
@@ -58,7 +54,7 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(Sizes.p8),
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               children: [
@@ -66,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                   image: SvgPicture.asset(
                     AppIcons.profileIcon,
                     color: AppColors.blue500,
-                    height: Sizes.deviceHeight * 0.07,
+                    height: Sizes.deviceHeight * 0.06,
                   ),
                   title:
                       FireBaseStoreHelper.getTotalNoOfUsers(users).toString(),
@@ -156,24 +152,15 @@ class DashboardCard extends StatelessWidget {
                     ),
                     child: image),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text(title, style: Get.textTheme.bodyLarge),
                       const SizedBox(height: 8),
                       Text(
                         subtitle,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: Get.textTheme.bodySmall,
                       ),
                     ],
                   ),
