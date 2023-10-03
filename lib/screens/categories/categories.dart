@@ -1,10 +1,6 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
 import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
@@ -37,22 +33,6 @@ class _CategoriesState extends State<Categories> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.blue100,
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.logout),
-            ),
-          ],
-        ),
-        drawer: CustomDrawer(),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(

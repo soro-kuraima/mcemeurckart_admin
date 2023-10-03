@@ -8,7 +8,6 @@ import 'package:mcemeurckart_admin/controller/orders_controller_getx.dart';
 import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
 import 'package:mcemeurckart_admin/controller/users_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
-import 'package:mcemeurckart_admin/screens/base_screen/widgets/custom_drawer.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'constants/index.dart';
 import 'theme/theme_provider.dart';

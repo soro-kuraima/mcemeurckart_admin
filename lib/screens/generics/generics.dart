@@ -5,7 +5,6 @@ import 'package:mcemeurckart_admin/constants/index.dart';
 import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
 import 'package:mcemeurckart_admin/controller/generics_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
-import 'package:mcemeurckart_admin/screens/base_screen/widgets/custom_drawer.dart';
 
 class Generics extends StatelessWidget {
   const Generics({super.key});
@@ -13,22 +12,6 @@ class Generics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.blue100,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(

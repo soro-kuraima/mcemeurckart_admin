@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -37,21 +36,6 @@ class _ViewCategoryState extends State<ViewCategory> {
         .where((product) => product['category'] == category['id'])
         .toList();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.blue100,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
       drawer: CustomDrawer(),
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
