@@ -138,7 +138,7 @@ class DashboardCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
+        padding: const EdgeInsets.all(Sizes.p32),
         child: Center(
           child: InkWell(
             onTap: onTap,
@@ -156,12 +156,16 @@ class DashboardCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: Get.textTheme.bodyLarge),
+                      Center(
+                        child: Text(title, style: Get.textTheme.bodyLarge),
+                      ), 
                       const SizedBox(height: 8),
-                      Text(
+                      Center (
+                        child: Text(
                         subtitle,
                         style: Get.textTheme.bodySmall,
                       ),
+                        ), 
                     ],
                   ),
                 ),
