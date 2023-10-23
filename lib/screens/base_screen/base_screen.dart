@@ -26,6 +26,12 @@ class _BaseScreenState extends State<BaseScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    Get.put(GenericsController());
+    Get.put(CategoriesController());
+    Get.put(ProductsController());
+    Get.put(OrdersController());
+    Get.put(UsersController());
+
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(

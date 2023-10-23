@@ -137,14 +137,15 @@ class DashboardCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p32),
+      child: Container(
+        padding: const EdgeInsets.all(Sizes.p4),
         child: Center(
           child: InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ClipRRect(
                     borderRadius: const BorderRadius.vertical(
@@ -158,14 +159,14 @@ class DashboardCard extends StatelessWidget {
                     children: [
                       Center(
                         child: Text(title, style: Get.textTheme.bodyLarge),
-                      ), 
-                      const SizedBox(height: 8),
-                      Center (
-                        child: Text(
-                        subtitle,
-                        style: Get.textTheme.bodySmall,
                       ),
-                        ), 
+                      const SizedBox(height: 8),
+                      Center(
+                        child: Text(
+                          subtitle,
+                          style: Get.textTheme.bodySmall,
+                        ),
+                      ),
                     ],
                   ),
                 ),

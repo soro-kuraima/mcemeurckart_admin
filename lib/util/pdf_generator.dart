@@ -1,12 +1,30 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:document_file_save_plus/document_file_save_plus.dart';
 
 Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
-  final status = await Permission.storage.request();
+  late final status;
+
+  if (Platform.isAndroid) {
+    var androidInfo = await DeviceInfoPlugin().androidInfo;
+    var sdkInt = androidInfo.version.sdkInt;
+    if (sdkInt >= 30) {
+      status = await Permission.manageExternalStorage.request();
+    } else {
+      status = await Permission.storage.request();
+    }
+
+    // Android 9 (SDK 28), Xiaomi Redmi Note 7
+  }
+
+  if (Platform.isIOS) {
+    status = await Permission.storage.request();
+  }
 
   if (status == PermissionStatus.denied ||
       status == PermissionStatus.restricted) {
@@ -18,10 +36,6 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
 
   final pdf = pw.Document();
 
-  // Add logo to the top left of the PDF
-  //final logoImage = pw.MemoryImage(
-  //File(AppAssets.appLogoBlack).readAsBytesSync(),
-  //);
   pdf.addPage(
     pw.Page(
       build: (context) {
@@ -88,38 +102,8 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
     ),
   );
 
-  // The file has been downloaded and saved to the device's storage.
-  // You can now use it or display it as needed.
-  // For example, you can open the file using an external app:
-  // await OpenFile.open(filePath);
-/*
-  Directory? directory;
-  try {
-    if (Platform.isIOS) {
-      directory = await getApplicationDocumentsDirectory();
-    } else {
-      directory = Directory('/storage/emulated/0/Download');
-      // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
-      // ignore: avoid_slow_async_io
-      if (!await directory.exists()) {
-        directory = await getExternalStorageDirectory();
-      }
-    }
-  } catch (err) {
-    print("Cannot get download folder path");
-  }*/
-
   final fileSaver = DocumentFileSavePlus();
 
   fileSaver.saveFile(await pdf.save(),
       'orders${DateTime.now().millisecondsSinceEpoch}.pdf', 'application/pdf');
-
-  /*final directory = await getExternalStorageDirectory();
-  final filePath =
-      '${directory!.path}/orders${DateTime.now().millisecondsSinceEpoch}.pdf';
-
-  final file = File(filePath);
-  await file.writeAsBytes(await pdf.save());
-  await file.writeAsBytes(await pdf.save());*/
-  // Let the user choose where to save the fil
 }

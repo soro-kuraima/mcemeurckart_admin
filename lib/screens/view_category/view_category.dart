@@ -36,7 +36,6 @@ class _ViewCategoryState extends State<ViewCategory> {
         .where((product) => product['category'] == category['id'])
         .toList();
     return Scaffold(
-      drawer: CustomDrawer(),
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(
@@ -50,6 +49,7 @@ class _ViewCategoryState extends State<ViewCategory> {
                       style: Get.textTheme.headlineSmall,
                     ),
                   ),
+                  actions: [],
                 ),
               ],
           body: ScrollConfiguration(

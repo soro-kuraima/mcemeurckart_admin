@@ -2,11 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mcemeurckart_admin/controller/auth_controller_getx.dart';
-import 'package:mcemeurckart_admin/controller/categories_controller_getx.dart';
-import 'package:mcemeurckart_admin/controller/generics_controller_getx.dart';
-import 'package:mcemeurckart_admin/controller/orders_controller_getx.dart';
-import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
-import 'package:mcemeurckart_admin/controller/users_controller_getx.dart';
 import 'package:mcemeurckart_admin/routes/app_routes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'constants/index.dart';
@@ -24,12 +19,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(AuthController());
-    Get.put(GenericsController());
-    Get.put(CategoriesController());
-    Get.put(ProductsController());
-    Get.put(OrdersController());
-    Get.put(UsersController());
-
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes().lightTheme,
