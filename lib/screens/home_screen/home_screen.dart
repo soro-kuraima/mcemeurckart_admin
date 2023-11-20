@@ -14,9 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final users = [...Get.find<UsersController>().users].obs;
-    final orders = [...Get.find<OrdersController>().orders].obs;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard'),
@@ -51,64 +48,75 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              padding: EdgeInsets.all(Sizes.p8),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              children: [
-                DashboardCard(
-                  image: SvgPicture.asset(
-                    AppIcons.profileIcon,
-                    color: AppColors.blue500,
-                    height: Sizes.deviceHeight * 0.06,
+          Obx(
+            () => Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                padding: EdgeInsets.all(Sizes.p8),
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                children: [
+                  DashboardCard(
+                    image: SvgPicture.asset(
+                      AppIcons.profileIcon,
+                      color: AppColors.blue500,
+                      height: Sizes.deviceHeight * 0.06,
+                    ),
+                    title: Get.find<UsersController>().users.length.toString(),
+                    subtitle: 'Users',
+                    onTap: () {
+                      Get.toNamed(AppRoutes.users);
+                    },
                   ),
-                  title:
-                      FireBaseStoreHelper.getTotalNoOfUsers(users).toString(),
-                  subtitle: 'Users',
-                  onTap: () {
-                    Get.toNamed(AppRoutes.users);
-                  },
-                ),
-                DashboardCard(
-                  image: SvgPicture.asset(
-                    AppIcons.shoppingBagIcon,
-                    color: AppColors.red500,
-                    height: Sizes.deviceHeight * 0.07,
+                  DashboardCard(
+                    image: SvgPicture.asset(
+                      AppIcons.shoppingBagIcon,
+                      color: AppColors.red500,
+                      height: Sizes.deviceHeight * 0.07,
+                    ),
+                    title:
+                        Get.find<OrdersController>().orders.length.toString(),
+                    subtitle: 'Orders Placed',
+                    onTap: () {
+                      Get.toNamed(AppRoutes.orders);
+                    },
                   ),
-                  title:
-                      FireBaseStoreHelper.getTotalNoOfOrders(orders).toString(),
-                  subtitle: 'Orders Placed',
-                  onTap: () {
-                    Get.toNamed(AppRoutes.orders);
-                  },
-                ),
-                DashboardCard(
-                  image: SvgPicture.asset(AppIcons.ordersIcon,
-                      color: AppColors.green500,
-                      height: Sizes.deviceHeight * 0.07),
-                  title: FireBaseStoreHelper.getTotalNoOfOrdersDelivered(orders)
-                      .toString(),
-                  subtitle: 'Orders Delivered',
-                  onTap: () {
-                    Get.toNamed(AppRoutes.orders);
-                  },
-                ),
-                DashboardCard(
-                  image: SvgPicture.asset(
-                    AppIcons.lockIcon,
-                    color: AppColors.yellow500,
-                    height: Sizes.deviceHeight * 0.07,
+                  DashboardCard(
+                    image: SvgPicture.asset(AppIcons.ordersIcon,
+                        color: AppColors.green500,
+                        height: Sizes.deviceHeight * 0.07),
+                    title: Get.find<OrdersController>()
+                        .orders
+                        .where(
+                            (element) => element['orderStatus'] == 'Delivered')
+                        .length
+                        .toString(),
+                    subtitle: 'Orders Delivered',
+                    onTap: () {
+                      Get.toNamed(AppRoutes.orders);
+                    },
                   ),
-                  title: FireBaseStoreHelper.getTotalRevenueGenerated(orders)
-                      .toString(),
-                  subtitle: 'In Revenue',
-                  onTap: () {
-                    Get.toNamed(AppRoutes.orders);
-                  },
-                ),
-              ],
+                  DashboardCard(
+                    image: SvgPicture.asset(
+                      AppIcons.lockIcon,
+                      color: AppColors.yellow500,
+                      height: Sizes.deviceHeight * 0.07,
+                    ),
+                    title: Get.find<OrdersController>()
+                        .orders
+                        .fold(
+                            0,
+                            (previousValue, element) =>
+                                previousValue +
+                                int.parse(element['orderValue'].toString()))
+                        .toString(),
+                    subtitle: 'In Revenue',
+                    onTap: () {
+                      Get.toNamed(AppRoutes.orders);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
