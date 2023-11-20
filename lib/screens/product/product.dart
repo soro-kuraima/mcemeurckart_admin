@@ -71,7 +71,7 @@ class _ProductState extends State<Product> with TickerProviderStateMixin {
         TextEditingValue(text: product['price'].toString());
     _monthlyLimitController.value = TextEditingValue(
         text: product['monthlyLimit'] == null
-            ? 'na'
+            ? '0'
             : product['monthlyLimit'].toString());
 
     return Scaffold(

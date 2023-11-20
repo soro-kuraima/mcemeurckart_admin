@@ -14,7 +14,7 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
     var sdkInt = androidInfo.version.sdkInt;
     if (sdkInt >= 30) {
-      status = await Permission.manageExternalStorage.request();
+      status = await Permission.manageExternalStorage;
     } else {
       status = await Permission.storage.request();
     }
@@ -63,15 +63,17 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
                 0: pw.FlexColumnWidth(1),
                 1: pw.FlexColumnWidth(2),
                 2: pw.FlexColumnWidth(1),
-                3: pw.FlexColumnWidth(1),
-                4: pw.FlexColumnWidth(2),
+                3: pw.FlexColumnWidth(2),
+                4: pw.FlexColumnWidth(1),
+                5: pw.FlexColumnWidth(2),
               },
               border: pw.TableBorder.all(),
               children: [
                 pw.TableRow(
                   children: [
                     pw.Text('Order ID'),
-                    pw.Text('Products'),
+                    pw.Text('Product Index'),
+                    pw.Text('Product'),
                     pw.Text('Order Date'),
                     pw.Text('Order Value'),
                   ],
@@ -87,6 +89,7 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
                   return pw.TableRow(
                     children: [
                       pw.Text(order['orderId']),
+                      pw.Text(products.toString()),
                       pw.Text(products.toString()),
                       pw.Text(order['orderDate'].toDate().toString()),
                       pw.Text(order['orderValue'].toString()),

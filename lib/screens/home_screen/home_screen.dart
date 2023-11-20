@@ -79,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   title:
                       FireBaseStoreHelper.getTotalNoOfOrders(orders).toString(),
-                  subtitle: 'orders placed',
+                  subtitle: 'Orders Placed',
                   onTap: () {
                     Get.toNamed(AppRoutes.orders);
                   },
@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                       height: Sizes.deviceHeight * 0.07),
                   title: FireBaseStoreHelper.getTotalNoOfOrdersDelivered(orders)
                       .toString(),
-                  subtitle: 'orders delivered',
+                  subtitle: 'Orders Delivered',
                   onTap: () {
                     Get.toNamed(AppRoutes.orders);
                   },
@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   title: FireBaseStoreHelper.getTotalRevenueGenerated(orders)
                       .toString(),
-                  subtitle: 'in revenue',
+                  subtitle: 'In Revenue',
                   onTap: () {
                     Get.toNamed(AppRoutes.orders);
                   },
