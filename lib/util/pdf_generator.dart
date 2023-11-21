@@ -2,12 +2,16 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mcemeurckart_admin/controller/products_controller_getx.dart';
+import 'package:mcemeurckart_admin/util/firestore_helper.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:document_file_save_plus/document_file_save_plus.dart';
 
-Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
+Future<void> generatePdf(List<dynamic> orders) async {
   late final status;
 
   if (Platform.isAndroid) {
@@ -36,6 +40,8 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
 
   final pdf = pw.Document();
 
+  final products = Get.find<ProductsController>().products;
+
   pdf.addPage(
     pw.Page(
       build: (context) {
@@ -63,16 +69,14 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
                 0: pw.FlexColumnWidth(1),
                 1: pw.FlexColumnWidth(2),
                 2: pw.FlexColumnWidth(1),
-                3: pw.FlexColumnWidth(2),
-                4: pw.FlexColumnWidth(1),
-                5: pw.FlexColumnWidth(2),
+                3: pw.FlexColumnWidth(1),
+                4: pw.FlexColumnWidth(2),
               },
               border: pw.TableBorder.all(),
               children: [
                 pw.TableRow(
                   children: [
                     pw.Text('Order ID'),
-                    pw.Text('Product Index'),
                     pw.Text('Product'),
                     pw.Text('Order Date'),
                     pw.Text('Order Value'),
@@ -83,14 +87,55 @@ Future<void> generatePdf(List<Map<String, dynamic>> orders) async {
                   verticalAlignment: pw.TableCellVerticalAlignment.middle,
                 ),
                 ...orders.map((order) {
-                  final products = order['products'].keys.map((product) {
-                    return product;
+                  final productTitles = order['products'].keys.map((product) {
+                    final productTitle = products.firstWhere((element) =>
+                        element['index'] == int.parse(product))['title'];
+                    return {
+                      'index': product,
+                      'title': productTitle,
+                      'quantity':
+                          order['products'][product]['quantity'].toString(),
+                    };
                   });
+                  log(productTitles.toString());
+
                   return pw.TableRow(
                     children: [
                       pw.Text(order['orderId']),
-                      pw.Text(products.toString()),
-                      pw.Text(products.toString()),
+                      pw.Container(
+                          width: 400, // Adjust the width as needed
+                          child: pw.Table(
+                            columnWidths: {
+                              0: pw.FlexColumnWidth(1),
+                              1: pw.FlexColumnWidth(2),
+                              2: pw.FlexColumnWidth(1),
+                              3: pw.FlexColumnWidth(2),
+                            },
+                            border: pw.TableBorder.all(),
+                            children: [
+                              pw.TableRow(
+                                children: [
+                                  pw.Text('Index'),
+                                  pw.Text('Title'),
+                                  pw.Text('Quantity'),
+                                ],
+                                decoration: const pw.BoxDecoration(
+                                  color: PdfColors.grey300,
+                                ),
+                                verticalAlignment:
+                                    pw.TableCellVerticalAlignment.middle,
+                              ),
+                              ...productTitles.map((product) {
+                                return pw.TableRow(
+                                  children: [
+                                    pw.Text(product['index']),
+                                    pw.Text(product['title']),
+                                    pw.Text(product['quantity']),
+                                  ],
+                                );
+                              }),
+                            ],
+                          )),
                       pw.Text(order['orderDate'].toDate().toString()),
                       pw.Text(order['orderValue'].toString()),
                     ],

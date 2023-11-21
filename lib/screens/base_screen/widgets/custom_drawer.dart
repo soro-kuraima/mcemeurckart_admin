@@ -164,6 +164,14 @@ class CustomDrawer extends StatelessWidget {
                       Get.toNamed(AppRoutes.generateReports);
                     },
                   ),
+                  ListTile(
+                    contentPadding: EdgeInsets.only(left: 40.0),
+                    title: const Text('Generate Demand'),
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Get.toNamed(AppRoutes.generateDemand);
+                    },
+                  ),
                 ]),
           ],
         ),

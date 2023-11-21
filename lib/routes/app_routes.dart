@@ -8,6 +8,7 @@ import "package:mcemeurckart_admin/screens/base_screen/base_screen.dart";
 import 'package:mcemeurckart_admin/screens/categories/categories.dart';
 import "package:mcemeurckart_admin/screens/categories/root_categories.dart";
 import "package:mcemeurckart_admin/screens/edit_category/edit_category.dart";
+import "package:mcemeurckart_admin/screens/generate_demand/generate_demand.dart";
 import "package:mcemeurckart_admin/screens/generics/generics.dart";
 import "package:mcemeurckart_admin/screens/home_screen/home_screen.dart";
 import "package:mcemeurckart_admin/screens/loading_screen/loading_screen.dart";
@@ -180,6 +181,13 @@ abstract class AppPages {
           curve: Curves.easeOut,
           transition: Transition.rightToLeft,
         ),
+        GetPage(
+          name: AppRoutes.generateDemand,
+          page: () => const GenerateDemand(),
+          transitionDuration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          transition: Transition.rightToLeft,
+        ),
       ],
     ),
   ];
@@ -220,6 +228,8 @@ abstract class AppRoutes {
   static const order = '/order';
 
   static const generateReports = '/generate-reports';
+
+  static const generateDemand = '/generate-demand';
 
   static const products = '/products';
 
