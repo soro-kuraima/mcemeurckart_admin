@@ -14,6 +14,7 @@ class ProductsCard extends StatelessWidget {
     this.onCardTap,
     required this.title,
     required this.price,
+    required this.stock,
     required this.imageUrl,
   });
 
@@ -21,6 +22,7 @@ class ProductsCard extends StatelessWidget {
   final double? height;
   final String title;
   final int price;
+  final int stock;
   final String imageUrl;
   final VoidCallback? onCardTap;
 
@@ -93,6 +95,26 @@ class ProductsCard extends StatelessWidget {
                             children: [
                               Text(
                                 '₹$price',
+                                style: Get.textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.neutral600,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                          gapH8,
+                          Row(
+                            children: [
+                              Text(
+                                'Stock:',
+                                style: Get.textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.organge300,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                              gapW4,
+                              Text(
+                                '$stock',
                                 style: Get.textTheme.bodyMedium?.copyWith(
                                   color: AppColors.neutral600,
                                 ),

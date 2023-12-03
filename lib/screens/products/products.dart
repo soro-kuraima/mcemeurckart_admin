@@ -60,6 +60,7 @@ class _ProductsState extends State<Products> {
                           itemBuilder: (_, index) => ProductsCard(
                             title: products[index]['title'],
                             price: products[index]['price'],
+                            stock: products[index]['stock'],
                             height: Sizes.deviceHeight * 0.6,
                             imageUrl: products[index]['imageUrl'],
                             onCardTap: () {
