@@ -11,7 +11,7 @@ class AppAssets {
   static const appLogoYellow = 'assets/logo/logo-yellow.svg';
   static const appLogoMceme = 'assets/logo/mceme_logo.svg';
 
-  static const mceme = 'assets/images/mceme.png';
+  static const mceme = 'assets/images/urc1.jpg';
 
   /* 
   * ============= Images ==============

@@ -72,6 +72,7 @@ class GenerateDemand extends StatelessWidget {
 
               // Android 9 (SDK 28), Xiaomi Redmi Note 7
             }
+        
 
             if (Platform.isIOS) {
               status = await Permission.storage.request();
@@ -112,8 +113,13 @@ class GenerateDemand extends StatelessWidget {
                         2: pw.FlexColumnWidth(1),
                         3: pw.FlexColumnWidth(1),
                       },
+                       border: pw.TableBorder.all(),
                       children: [
                         pw.TableRow(
+                          decoration: const pw.BoxDecoration(
+                    color: PdfColors.grey300,
+                  ),
+                  verticalAlignment: pw.TableCellVerticalAlignment.middle,
                           children: [
                             pw.Padding(
                               padding: const pw.EdgeInsets.all(2.0),
@@ -155,6 +161,10 @@ class GenerateDemand extends StatelessWidget {
                         ),
                         ...demandList.map((element) {
                           return pw.TableRow(
+                            decoration: const pw.BoxDecoration(
+                    color: PdfColors.grey300,
+                  ),
+                  verticalAlignment: pw.TableCellVerticalAlignment.middle,
                             children: [
                               pw.Padding(
                                 padding: const pw.EdgeInsets.all(2.0),
