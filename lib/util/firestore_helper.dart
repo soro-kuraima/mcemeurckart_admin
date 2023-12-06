@@ -407,19 +407,10 @@ class FireBaseStoreHelper {
   static Future<void> updateOrderStatus(String orderId, dynamic products,
       {String orderStatus = 'Delivered'}) async {
     try {
-      final batch = db.batch();
       final orderRef = ordersRef.doc(orderId);
-      batch.update(orderRef, {'orderStatus': orderStatus});
-
-      products.forEach((element) {
-        final productRef =
-            productsRef.doc(element['product']['index'].toString());
-        batch.update(productRef, {
-          'stock': FieldValue.increment(-1),
-        });
+      orderRef.update({
+        'orderStatus': orderStatus,
       });
-
-      await batch.commit();
     } catch (e) {
       print(e);
     }
