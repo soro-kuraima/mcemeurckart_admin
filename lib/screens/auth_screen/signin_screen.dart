@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import "package:flutter/material.dart";
 import "package:get/get.dart";
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:mcemeurckart_admin/common_widgets/index.dart';
 import 'package:mcemeurckart_admin/constants/index.dart';
@@ -35,11 +32,9 @@ class SignInScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  SvgPicture.asset(
-                    AppAssets.appLogoMceme,
-                    width: Sizes.p100,
-                    height: Sizes.p100,
-                  ),
+                  Image.asset(AppAssets.mceme,
+                      height: Sizes.deviceHeight * .3,
+                      width: Sizes.deviceWidth * .8),
                   gapH48,
                   Text(
                     'Sign in to admin account',

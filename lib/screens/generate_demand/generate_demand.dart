@@ -36,6 +36,7 @@ class GenerateDemand extends StatelessWidget {
                 'index': element['index'],
                 'title': element['title'],
                 'demand': 0,
+                'stock': element['stock'],
               };
             }).toList();
 
@@ -141,6 +142,15 @@ class GenerateDemand extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            pw.Padding(
+                              padding: const pw.EdgeInsets.all(2.0),
+                              child: pw.Text(
+                                'Stock',
+                                style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         ...demandList.map((element) {
@@ -162,6 +172,12 @@ class GenerateDemand extends StatelessWidget {
                                 padding: const pw.EdgeInsets.all(2.0),
                                 child: pw.Text(
                                   element['demand'].toString(),
+                                ),
+                              ),
+                              pw.Padding(
+                                padding: const pw.EdgeInsets.all(2.0),
+                                child: pw.Text(
+                                  element['stock'].toString(),
                                 ),
                               ),
                             ],
