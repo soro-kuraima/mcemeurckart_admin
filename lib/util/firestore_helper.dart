@@ -316,6 +316,7 @@ class FireBaseStoreHelper {
           'description': e.data()['description'],
           'stock': e.data()['stock'],
           'price': e.data()['price'],
+          'monthlyLimit': e.data()['monthlyLimit'],
           'imageUrl': e.data()['imageUrl'],
           'generic': e.data()['generic'],
           'category': e.data()['category'],
