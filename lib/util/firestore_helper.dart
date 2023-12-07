@@ -420,9 +420,10 @@ class FireBaseStoreHelper {
   static Future<List<Map<String, dynamic>>> getOrdersByDate(
       DateTime date) async {
     try {
+      final startDate = DateTime(date.year, date.month, date.day);
       final endDate = DateTime(date.year, date.month, date.day + 1);
       final orders = ordersRef
-          .where('orderDate', isGreaterThanOrEqualTo: date)
+          .where('orderDate', isGreaterThanOrEqualTo: startDate)
           .where('orderDate', isLessThanOrEqualTo: endDate);
 
       final querySnapshot = await orders.get();

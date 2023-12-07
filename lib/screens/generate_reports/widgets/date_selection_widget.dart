@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -47,8 +48,10 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
     );
     if (selectedRange != null) {
       setState(() {
-        _startDate = selectedRange.start;
-        _endDate = selectedRange.end;
+        _startDate = DateTime(selectedRange.start.year,
+            selectedRange.start.month, selectedRange.start.day);
+        _endDate = DateTime(selectedRange.end.year, selectedRange.end.month,
+            selectedRange.end.day + 1);
         _isRangeSelected = true;
       });
     }
@@ -112,6 +115,8 @@ class _DateSelectionWidgetState extends State<DateSelectionWidget> {
                     /* orders = orders
                         .where((element) => element['status'] == 'Delivered')
                         .toList();*/
+                    log("loggging from date selection widget");
+                    log(orders.toString());
 
                     await generatePdf(orders);
                   }
